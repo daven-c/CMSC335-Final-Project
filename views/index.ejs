@@ -50,7 +50,9 @@
             const message = input.value.trim();
             if (!message) return;
 
-            input.disabled = sendBtn.disabled = true;
+            // debug
+            input.disabled = true;
+            sendBtn.disabled = true;
             sendBtn.textContent = 'Sending...';
             input.value = '';
 
@@ -67,22 +69,27 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    container.innerHTML += `<div class="user"><strong>You:</strong> ${data.userMessage}</div>
-                        <div class="bot"><strong>AI:</strong> ${data.botResponse}</div>`;
+                    const userDiv = '<div class="user"><strong>You:</strong> ' + data.userMessage + '</div>';
+                    const botDiv = '<div class="bot"><strong>AI:</strong> ' + data.botResponse + '</div>';
+                    container.innerHTML = container.innerHTML + userDiv + botDiv;
                     container.scrollTop = container.scrollHeight;
                 } else {
-                    container.innerHTML += `<div class="error">${data.error || 'Error occurred'}</div>`;
+                    const errorMessage = data.error || 'Error occurred';
+                    const errorDiv = '<div class="error">' + errorMessage + '</div>';
+                    container.innerHTML = container.innerHTML + errorDiv;
                 }
             } catch (error) {
-                container.innerHTML += '<div class="error">Network error</div>';
+                container.innerHTML = container.innerHTML + '<div class="error">Network error</div>';
             } finally {
-                input.disabled = sendBtn.disabled = false;
+                input.disabled = false;
+                sendBtn.disabled = false;
                 sendBtn.textContent = 'Send';
             }
         });
 
         document.getElementById('clearAllButton').addEventListener('click', async () => {
-            if (!confirm('Clear all chat history?')) return;
+            const confirmed = confirm('Clear all chat history?');
+            if (!confirmed) return;
 
             try {
                 const res = await fetch('/chat/clear', {
