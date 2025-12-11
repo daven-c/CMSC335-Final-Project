@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
 			history: [],
 			error: "Failed to load chat history",
 		});
+		console.log(error);
 	}
 });
 
@@ -45,6 +46,7 @@ router.post("/chat", async (req, res) => {
 		res.status(500).json({
 			error: "Failed to process message",
 		});
+		console.log(error);
 	}
 });
 
@@ -56,6 +58,7 @@ router.delete("/chat/clear", async (req, res) => {
 		res.status(500).json({
 			error: "Failed to clear chat history",
 		});
+		console.log(error);
 	}
 });
 

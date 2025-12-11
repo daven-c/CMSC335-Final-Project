@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
 mongoose
-	.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/dvd-ai-chat")
+	.connect(process.env.MONGODB_URI || "mongodb://localhost:3000/dvd-ai-chat")
 	.then(() => console.log("Connected to MongoDB"))
 	.catch((error) => {
 		console.error("MongoDB connection error:", error);
@@ -21,6 +21,6 @@ mongoose
 	});
 
 app.use("/", chatRoutes);
-app.use((req, res) => res.status(404).send("404 - Not Found"));
+app.use((req, res) => res.status(404).send("Not Found"));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
