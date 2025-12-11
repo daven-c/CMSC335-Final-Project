@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DVD AI Chat</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>DVD AI Chat</h1>
+            <button id="clearAllButton">Clear All</button>
+        </header>
+
+        <div id="chatContainer">
+            <% if (typeof error !=='undefined' ) { %>
+                <div class="error">
+                    <%= error %>
+                </div>
+                <% } %>
+                    <% if (history && history.length> 0) { %>
+                        <% history.forEach(function(chat) { %>
+                            <div class="user"><strong>You:</strong>
+                                <%= chat.userMessage %>
+                            </div>
+                            <div class="bot"><strong>AI:</strong>
+                                <%= chat.botResponse %>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>No messages yet.</p>
+                                    <% } %>
+        </div>
+
+        <form id="chatForm">
+            <input type="text" id="messageInput" name="message" placeholder="Type message..." required>
+            <button type="submit" id="sendButton">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('chatForm');
+        const input = document.getElementById('messageInput');
+        const container = document.getElementById('chatContainer');
+        const sendBtn = document.getElementById('sendButton');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = input.value.trim();
+            if (!message) return;
+
+            input.disabled = sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending...';
+            input.value = '';
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message
+                    })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    container.innerHTML += `<div class="user"><strong>You:</strong> ${data.userMessage}</div>
+                        <div class="bot"><strong>AI:</strong> ${data.botResponse}</div>`;
+                    container.scrollTop = container.scrollHeight;
+                } else {
+                    container.innerHTML += `<div class="error">${data.error || 'Error occurred'}</div>`;
+                }
+            } catch (error) {
+                container.innerHTML += '<div class="error">Network error</div>';
+            } finally {
+                input.disabled = sendBtn.disabled = false;
+                sendBtn.textContent = 'Send';
+            }
+        });
+
+        document.getElementById('clearAllButton').addEventListener('click', async () => {
+            if (!confirm('Clear all chat history?')) return;
+
+            try {
+                const res = await fetch('/chat/clear', {
+                    method: 'DELETE'
+                });
+                if (res.ok) {
+                    container.innerHTML = '<p>No messages yet.</p>';
+                }
+            } catch (error) {
+                alert('Failed to clear');
+            }
+        });
+
+        window.addEventListener('load', () => {
+            container.scrollTop = container.scrollHeight;
+        });
+    </script>
+</body>
+
+</html>
