@@ -14,4 +14,4 @@
 
 **Contact Email:** [dcho0618@terpmail.umd.edu]
 
-**Deployed App Link:** (https://cmsc335-final-project.vercel.app/)[https://cmsc335-final-project.vercel.app/]
+**Deployed App Link:** [https://cmsc335-final-project.vercel.app](https://cmsc335-final-project.vercel.app)
