@@ -4,7 +4,7 @@
 
 **Group Members:** Daven Chang (dchangiz), Viraaj Singh (vsingh24), Daniel Cho (dcho0618)
 
-**App Description:** A server-side rendered chat application that allows users to interact with Google's Gemini AI and stores conversation history in MongoDB.
+**App Description:** A chat application that allows users to interact with Google's Gemini AI and stores conversation history in MongoDB.
 
 **YouTube Video Link:** tbd
 
@@ -14,4 +14,4 @@
 
 **Contact Email:** [dcho0618@terpmail.umd.edu]
 
-**Deployed App Link:** tbd
+**Deployed App Link:** (https://cmsc335-final-project.vercel.app/)[https://cmsc335-final-project.vercel.app/]
